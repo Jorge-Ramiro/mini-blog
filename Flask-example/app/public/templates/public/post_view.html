@@ -1,0 +1,49 @@
+{% extends "base_template.html" %}
+
+{% block title %}{{ slug_title }}{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="text-center fw-bold">{{ post.title }}</h1>
+    <div class="mb-1">
+      <span class="text-dark fw-semibold">Publicado el {{ post.created|datetime('full') }}</span>
+    </div>
+    {% if post.image_name %}
+      <img src="{{ url_for('media_posts', filename=post.image_name) }}" class="img-thumbnail mb-1">
+    {% endif %}
+    <p class="text-dark fs-5 fst-italic fw-semibold">
+      {{ post.content }}
+    </p>
+    {% if current_user.is_authenticated %}
+      <h2 class="fw-bold">Añadir comentario</h2>
+      <div class="container w-50 ms-0 mb-3">
+        <form action="" method="post" novalidate>
+          {{ form.hidden_tag() }}
+          <div class="form-floating mb-2">
+            {{ form.content(class="form-control", placeholder="Contenido") }}
+            {{ form.content.label }}
+            {% for error in form.content.errors %}
+              <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+          </div>
+          {{ form.submit(class="btn btn-success w-25") }}
+        </form>
+      </div>
+    {% endif %}
+    <h2 class="fw-bold">Comentarios</h2>
+    <div class="container w-50 ms-0 mb-2" id="comments">
+      <ul class="list-group">
+        {% for comment in post.comments %}
+          <li class="list-group-item list-group-item-secondary">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{ comment.user_name }}</h5>
+              <small>Comentó el {{ comment.created|datetime }}</small>
+            </div>
+            <p class="mb-1">{{ comment.content }}</p>
+            <small></small>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}

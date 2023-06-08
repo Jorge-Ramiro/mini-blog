@@ -1,0 +1,26 @@
+{% extends "base_template.html" %}
+
+{% block title %}
+  Miniblog | Admin
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="list-group my-2">
+      <a href="{{ url_for('admin.list_posts') }}" class="list-group-item list-group-item-action mb-3 active">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">Posts</h5>
+          <small>Publicaciones totales: {{ count_all_posts }}</small>
+        </div>
+        <p class="mb-1">En esta sección se pueden crear, editar y eliminar publicaciones.</p>
+      </a>
+      <a href="{{ url_for('admin.list_users') }}" class="list-group-item list-group-item-action active">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">Usuarios</h5>
+          <small>Usuarios totales: {{ count_all_users }}</small>
+        </div>
+        <p class="mb-1">En esta sección se pueden crear, eliminar y otorgar permisos especiales a los usuarios.</p>
+      </a>
+    </div>
+  </div>
+{% endblock %}

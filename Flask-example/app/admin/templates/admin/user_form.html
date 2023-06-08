@@ -1,0 +1,35 @@
+{% extends "base_template.html" %}
+
+{% block title %}
+  {{ user.name }}
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-2">
+    <h2>Detalle del usuario</h2>
+    <div class="container ms-0 w-50">
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="floatingInput" placeholder="Nombre" value="{{ user.name }}" readonly>
+        <label for="floatingInput">Nombre</label>
+      </div>
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="floatingInput" placeholder="Email" value="{{ user.email }}" readonly>
+        <label for="floatingInput">Email</label>
+      </div>
+      <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <div class="form-check form-switch mb-2">
+          {{ form.is_admin(class="form-check-input", role="switch", id="flexSwitchCheckAdmin") }}
+          {{ form.is_admin.label(class="form-check-label", for="flexSwitchCheckAdmin") }}
+          {% for error in form.is_admin.errors %}
+            <span style="color: red;">{{ error }}</span>
+          {% endfor %}
+        </div>
+        {{ form.submit(class="btn btn-outline-success w-25 mb-2") }}
+      </form>
+      <form action="{{ url_for('admin.delete_user', user_id=user.id) }}" method="post" novalidate>
+        <button type="submit" class="btn btn-outline-danger w-25">Eliminar</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

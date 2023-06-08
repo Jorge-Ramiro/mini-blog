@@ -1,0 +1,56 @@
+{% extends "base_template.html" %}
+
+{% block title %}Tutorial Flask: Miniblog{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <!--List group-->
+    <div class="list-group my-2">
+      {% for post in post_pagination.items %}
+        <a href="{{ url_for('public.show_post', slug=post.title_slug) }}" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ post.title }}</h5>
+            <small>{{ post.created|datetime }}</small>
+          </div>
+          <p class="mb-1">{{ post.content }}</p>
+        </a>
+      {% else %}
+        <a href="/" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">No hay entradas</h5>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+    <!--Pagination-->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-end">
+        {% if post_pagination.items %}
+          <li class="page-item {% if not post_pagination.has_prev %} disabled  {% endif %}">
+            <a class="page-link" href="{{ url_for('public.index', page=post_pagination.page - 1) }}">Previous</a>
+          </li>
+        {% endif %}
+        {%- for page in post_pagination.iter_pages() %}
+          {% if page %}
+            {% if page != post_pagination.page %}
+              <li class="page-item">
+                <a class="page-link" href="{{ url_for('public.index', page=page) }}">{{ page }}</a>
+              </li>
+            {% else %}
+              <li class="page-item active">
+                <a class="page-link">{{ page }}</a>
+              </li>
+            {% endif %}
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">…</span></li>
+          {% endif %}
+        {%- endfor %}
+        {% if post_pagination.items %}
+          <li class="page-item {% if not post_pagination.has_next %} disabled  {% endif %}">
+            <a class="page-link" href="{{ url_for('public.index', page=post_pagination.page + 1) }}">Next</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+{% endblock %}
